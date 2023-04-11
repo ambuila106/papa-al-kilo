@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 container-fluid mt-5 col-12 col-sm-10 col-md-7 col-lg-6 col-xl-4">
+  <div class="p-4 container-fluid pt-5 col-12 col-sm-10 col-md-7 col-lg-6 col-xl-4">
     <div>
       <h1 class="fw-bold mb-5 text-primary fs-3">¡Bienvenido de vuelta! 👋</h1>
       <FieldInput placeholder="Correo" type="text"></FieldInput>
