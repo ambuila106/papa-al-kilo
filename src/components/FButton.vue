@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-    <button class="f-button container-fluid">Ingresar</button>
+    <button class="f-button container-fluid" @click="click">{{ text }}</button>
     </div>
   </div>
 </template>
@@ -14,6 +14,15 @@ export default {
     type: {
       type: String,
       default: 'text'
+    },
+    text: {
+      type: String,
+      default: 'Ingresar'
+    }
+  },
+  methods: {
+    click() {
+      this.$emit('click')
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <input class="field-input container-fluid" :type="type" :placeholder="placeholder">
+      <input v-model="value" class="field-input container-fluid" :type="type" :placeholder="placeholder">
     </div>
   </div>
 </template>
@@ -18,6 +18,17 @@ export default {
     placeholder: {
       type: String,
       default: 'text'
+    },
+  },
+  data() {
+    return {
+      value: ''  
+    }
+  },
+  watch:{
+    value(value) {
+      console.log(value)
+      this.$emit('input', value)
     }
   }
 }

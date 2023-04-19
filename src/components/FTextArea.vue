@@ -24,7 +24,6 @@
 
     watch: {
       publication(value) {
-        console.log(value)
         this.$emit('input', value)
       }
     }
