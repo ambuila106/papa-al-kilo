@@ -21,15 +21,30 @@
 <script>
 import FTextArea from '../components/FTextArea.vue'
 import FButton from '../components/FButton.vue'
+import app from '@/firebase.js'
+import { getDatabase, ref, onValue} from "firebase/database";
+
 export default {
   name: 'Home',
   components: { FTextArea, FButton },
   data() {
     return {
       publication: '',
-      publications: ['Me gusta sofia de primero de industrial', 'A juan le ponen cacho']
+      publications: []
     }
   },
+  async mounted() {
+    //const db = firebase.database().ref();
+    const db = getDatabase();
+    const starCountRef = ref(db, 'publications/');
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      this.publications = data.reverse()
+    })
+
+    console.log(getDatabase(app))
+  },
+
   methods: {
     addPublication() {
       console.log("publication: ", this.publication)
