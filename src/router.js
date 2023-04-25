@@ -16,6 +16,11 @@ export default new Router({
       component: Home
     },
     {
+      path: '/festival-universitario',
+      name: 'festival-universitario',
+      component: Home
+    },
+    {
       path: '/signin',
       name: 'signin',
       component: SignIn
