@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import App from './App.vue'
 
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp.vue'
@@ -18,17 +19,24 @@ export default new Router({
     {
       path: '/festival-universitario',
       name: 'festival-universitario',
-      component: Home
-    },
-    {
-      path: '/signin',
-      name: 'signin',
-      component: SignIn
-    },
-    {
-      path: '/signup',
-      name: 'signup',
-      component: SignUp
+      component: App,
+      children: [
+        {
+          path: '/',
+          name: 'home',
+          component: Home
+        },
+        {
+          path: '/festival-universitario/signin',
+          name: 'signin',
+          component: SignIn
+        },
+        {
+          path: '/festival-universitario/signup',
+          name: 'signup',
+          component: SignUp
+        },
+      ]
     },
   ]
 })
