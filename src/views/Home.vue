@@ -41,7 +41,7 @@ export default {
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val()
       console.log("data: ", data)
-      this.publications = data
+      this.publications = data.reverse()
     })
 
     console.log(getDatabase(app))
