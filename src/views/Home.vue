@@ -22,7 +22,7 @@
 import FTextArea from '../components/FTextArea.vue'
 import FButton from '../components/FButton.vue'
 import app from '@/firebase.js'
-import { getDatabase, ref, onValue} from "firebase/database";
+import { getDatabase, ref, onValue, set} from "firebase/database";
 
 export default {
   name: 'Home',
@@ -30,16 +30,18 @@ export default {
   data() {
     return {
       publication: '',
-      publications: []
+      publications: [],
+      db: null
     }
   },
   async mounted() {
     //const db = firebase.database().ref();
-    const db = getDatabase();
-    const starCountRef = ref(db, 'publications/');
+    this.db = getDatabase();
+    const starCountRef = ref(this.db, 'publications/');
     onValue(starCountRef, (snapshot) => {
-      const data = snapshot.val();
-      this.publications = data.reverse()
+      const data = snapshot.val()
+      console.log("data: ", data)
+      this.publications = data
     })
 
     console.log(getDatabase(app))
@@ -49,8 +51,10 @@ export default {
     addPublication() {
       console.log("publication: ", this.publication)
       if (this.publication) {
-        this.publications.push(this.publication);
-        this.publication = '';
+        this.publications.push(this.publication)
+        console.log(this.publications)
+        set(ref(this.db, 'publications/'), this.publications)
+        this.publication = ''
       }
     }
   }
