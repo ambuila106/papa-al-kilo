@@ -5,6 +5,7 @@ import App from './App.vue'
 
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp.vue'
+import Subscribe from './views/Subscribe.vue'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
           path: '/festival-universitario/signup',
           name: 'signup',
           component: SignUp
+        },
+        {
+          path: '/festival-universitario/subscribe',
+          name: 'signup',
+          component: Subscribe
         },
       ]
     },

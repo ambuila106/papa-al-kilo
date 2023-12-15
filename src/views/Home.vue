@@ -17,7 +17,7 @@
     </div>
   </div>
 </template>
-  
+
 <script>
 import FTextArea from '../components/FTextArea.vue'
 import FButton from '../components/FButton.vue'
