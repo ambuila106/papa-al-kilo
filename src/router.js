@@ -18,8 +18,8 @@ export default new Router({
       component: Home
     },
     {
-      path: '/festival-universitario',
-      name: 'festival-universitario',
+      path: '/festi-sugest',
+      name: 'festi-sugest',
       component: App,
       children: [
         {
@@ -38,8 +38,8 @@ export default new Router({
           component: SignUp
         },
         {
-          path: '/festival-universitario/subscribe',
-          name: 'signup',
+          path: '/festi-sugest/subscribe',
+          name: 'subscribe',
           component: Subscribe
         },
       ]
