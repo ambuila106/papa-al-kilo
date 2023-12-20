@@ -31,10 +31,6 @@ export default {
       showModalSucces:false,
       jobs: [
         {
-          description: "Se busca mesero hombre para cafetería, sueldo: 60mil x día.",
-          number: 3052934834,
-        },
-        {
           description: "Se solicita mesero con experiencia para discotela La Bendición.",
           number: 3219332502
         },
