@@ -6,6 +6,7 @@ import App from './App.vue'
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp.vue'
 import Subscribe from './views/Subscribe.vue'
+import Jobs from './views/Jobs.vue'
 
 Vue.use(Router)
 
@@ -25,7 +26,7 @@ export default new Router({
         {
           path: '/',
           name: 'home',
-          component: Home
+          component: Jobs
         },
         {
           path: '/festival-universitario/signin',
@@ -41,6 +42,11 @@ export default new Router({
           path: '/festi-sugest/subscribe',
           name: 'subscribe',
           component: Subscribe
+        },
+        {
+          path: '/festi-sugest/home',
+          name: 'home',
+          component: Jobs
         },
       ]
     },

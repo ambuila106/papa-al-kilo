@@ -92,7 +92,6 @@ export default {
 }
 </script>
 
-<style>
 <style scoped>
 h1, h2 {
   font-weight: normal;
