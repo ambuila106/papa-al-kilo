@@ -18,7 +18,7 @@
 
 <script>
 import app from '@/firebase.js'
-import { getDatabase, ref, get, set, onValue} from "firebase/database";
+import { getDatabase, ref, get, set } from "firebase/database";
 
 export default {
   name: 'Jobs',
@@ -80,41 +80,31 @@ export default {
   async mounted() {
     //const db = firebase.database().ref();
     this.db = getDatabase();
-    const starCountRef = ref(this.db, 'emails/');
-    onValue(starCountRef, (snapshot) => {
-      const data = snapshot.val()
-      console.log("data: ", data)
-      this.emails = data
-    })
+    this.addView()
 
     console.log(getDatabase(app))
   },
 
+
   methods: {
-    async addEmail(){
-      const listaRef = ref(this.db, 'emails'); // Ajusta el nombre de tu lista
+    async addView(){
+      const listaRef = ref(this.db, 'views'); // Ajusta el nombre de tu lista
 
         try {
-          // Obtén la lista actual una vez
           const snapshot = await get(listaRef);
 
           const listaActual = snapshot.val();
 
-          // Si la lista existe, agrégale el nuevo correo
           if (listaActual) {
-            listaActual.push(this.email);
+            listaActual.push("new view");
 
-            // Actualiza la lista en la base de datos
             await set(listaRef, listaActual);
           } else {
-            // Si la lista no existe, crea una nueva lista con el primer correo
-            await set(listaRef, [this.email]);
+            await set(listaRef, ["new view"]);
           }
 
-          this.email = ""
-          this.showModalSucces = true
         } catch (error) {
-          console.error("Error al agregar el correo", error);
+          console.error("Error al agregar la vista", error);
         }
     },
 
