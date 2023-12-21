@@ -5,20 +5,22 @@
     <p>
       Empleos: {{ jobs.length }}
     </p>
+    <div v-for="job in jobs" @click="goToBusiness(job.number)" :key="job?.description" class="bordered-box">
+      {{ job?.description }}
 
-    <div @click="goToBusiness(job.number)" v-for="job in jobs" :key="job" class="bordered-box">
-      {{ job.description }}
-      <hr>
-      <a class="job-number">
-        Whatsapp: {{ job.number }}
-      </a>
+      <template v-if="job?.number">
+        <hr>
+        <a class="job-number">
+          Whatsapp: {{ job.number }}
+        </a>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
 import app from '@/firebase.js'
-import { getDatabase, ref, get, set } from "firebase/database";
+import { getDatabase, ref, get, set, onValue } from "firebase/database";
 
 export default {
   name: 'Jobs',
@@ -29,54 +31,21 @@ export default {
       emails: [],
       db: null,
       showModalSucces:false,
-      jobs: [
-        {
-          description: "Se solicita mesero con experiencia para discotela La Bendición.",
-          number: 3219332502
-        },
-        {
-          description: "Se necesita grafitero o artista para pintar una pared de 12M x 12M.",
-          number: 3043976788
-        },
-        {
-          description: "Se necesita mesera bien presentada y con experiencia para trabajar en Felina.",
-          number: 3027466977
-        },
-        {
-          description: "Se necesita Auxiliar logistico en chorillano, sueldo: salario mínimo con prestaciones de ley y auxilio de transporte",
-          number: 3197887917
-        },
-        {
-          description: "Se necesita Asesor comercial en chorillano, sueldo: salario mínimo con prestaciones de ley y auxilio de transporte",
-          number: 3197887917
-        },
-        {
-          description: "Se necesita Auxiliar de bodega en chorillano, sueldo: salario mínimo con prestaciones de ley y auxilio de transporte",
-          number: 3197887917
-        },
-        {
-          description: "Se necesita monitora para estudio webcam, con disponibilidad de tiempo y buena actitud",
-          number: 3213532560
-        },
-        {
-          description: "Se nececita gerente educativo para liceo los nogales, adjunta hoja de vida al correo: liceo.losnogales@hotmail.com",
-          number: 3146106444
-        },
-        {
-          description: "Se nececita psicólogo educativo para liceo los nogales, adjunta hoja de vida al correo: liceo.losnogales@hotmail.com.",
-          number: 3146106444
-        },
-        {
-          description: "Se necesita a mujer para manejo de redes sociales a tiempo completo, conocimientos necesarios: Copys persuasivos, conocimientos básicos en ventas, manejo de chatgpt, canva básico.",
-          number: 3204042712
-        },
-      ]
+      jobs: []
     }
   },
   async mounted() {
     //const db = firebase.database().ref();
     this.db = getDatabase();
     this.addView()
+
+    const jobsRef = ref(this.db, 'jobs/');
+
+    onValue(jobsRef, (snapshot) => {
+      const data = snapshot.val()
+      console.log("data: ", data)
+      this.jobs = data.reverse().filter(elemento => elemento)
+    })
 
     console.log(getDatabase(app))
   },
@@ -105,7 +74,9 @@ export default {
     },
 
     goToBusiness(number){
-      window.location.href = 'https://wa.me/' + "57" + number
+      if(number) {
+        window.location.href = 'https://wa.me/' + "57" + number
+      }
     }
   },
 
