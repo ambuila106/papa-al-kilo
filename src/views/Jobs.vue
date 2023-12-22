@@ -15,6 +15,22 @@
         </a>
       </template>
     </div>
+
+    <h1 class="job-title">Tools</h1>
+
+    <p>
+      Servicios: {{ services?.length }}
+    </p>
+    <div v-for="service in services" @click="goToBusiness(service.number)" :key="service?.description" class="bordered-box">
+      {{ service?.description }}
+
+      <template v-if="service?.number">
+        <hr>
+        <a class="job-number">
+          Whatsapp: {{ service.number }}
+        </a>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -31,7 +47,8 @@ export default {
       emails: [],
       db: null,
       showModalSucces:false,
-      jobs: []
+      jobs: [],
+      services: []
     }
   },
   async mounted() {
@@ -45,6 +62,14 @@ export default {
       const data = snapshot.val()
       console.log("data: ", data)
       this.jobs = data.reverse().filter(elemento => elemento)
+    })
+
+    const servicesRef = ref(this.db, 'services/');
+
+    onValue(servicesRef, (snapshot) => {
+      const data = snapshot.val()
+      console.log("data: ", data)
+      this.services = data.reverse().filter(elemento => elemento)
     })
 
     console.log(getDatabase(app))
