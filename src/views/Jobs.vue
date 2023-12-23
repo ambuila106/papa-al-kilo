@@ -1,5 +1,21 @@
 <template>
   <div class="job">
+    <div v-if="isModalServiceActive" class="modal-form">
+      <div class="bordered-box">
+          <p>Agrega tu servicio:</p>
+          <div class="btn btn-link p-0" @click="toggleModalService()">
+            cerrar
+          </div>
+
+        <div class="input-send">
+          <input v-model="newService.description" type="text" placeholder="Descripción">
+          <input v-model="newService.number" type="text" placeholder="Número de whatsapp">
+          <div class="button" @click="addService()">Enviar</div>
+        </div>
+      </div>
+    </div>
+
+
     <h1 class="job-title">JOBS</h1>
 
     <p>
@@ -18,9 +34,16 @@
 
     <h1 class="job-title">Tools</h1>
 
-    <p>
-      Servicios: {{ services?.length }}
-    </p>
+    <div class="actions">
+      <a>
+        Servicios: {{ services?.length }}
+      </a>
+
+      <div class="btn btn-link ml-1 p-0" @click="toggleModalService()">
+        Agregar
+      </div>
+    </div>
+
     <div v-for="service in services" @click="goToBusiness(service.number)" :key="service?.description" class="bordered-box">
       {{ service?.description }}
 
@@ -48,7 +71,12 @@ export default {
       db: null,
       showModalSucces:false,
       jobs: [],
-      services: []
+      services: [],
+      isModalServiceActive: false,
+      newService: {
+        description: '',
+        number: ''
+      },
     }
   },
   async mounted() {
@@ -98,10 +126,35 @@ export default {
         }
     },
 
+    async addService(){
+      const listaRef = ref(this.db, 'services/')
+
+        try {
+          const snapshot = await get(listaRef)
+
+          const listaActual = snapshot.val()
+
+          if (listaActual) {
+            listaActual.push(this.newService)
+
+            await set(listaRef, listaActual)
+          }
+
+        } catch (error) {
+          console.error("Error al agregar la vista", error);
+        }
+
+        this.toggleModalService()
+    },
+
     goToBusiness(number){
       if(number) {
         window.location.href = 'https://wa.me/' + "57" + number
       }
+    },
+
+    toggleModalService() {
+      this.isModalServiceActive = !this.isModalServiceActive
     }
   },
 
@@ -171,6 +224,22 @@ h1, h2 {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.modal-form {
+  position: fixed;
+  top: 60%;
+  background-color: #000516;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 1rem;
+  align-items: center;
 }
 
 </style>
