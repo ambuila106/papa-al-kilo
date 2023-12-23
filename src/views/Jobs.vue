@@ -145,6 +145,10 @@ export default {
         }
 
         this.toggleModalService()
+        this.newService = {
+          description: '',
+          number: ''
+        }
     },
 
     goToBusiness(number){
