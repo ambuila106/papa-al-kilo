@@ -15,12 +15,34 @@
       </div>
     </div>
 
+    <div v-if="isModalJobActive" class="modal-form">
+      <div class="bordered-box">
+          <p>Agrega tu vacante:</p>
+          <div class="btn btn-link p-0" @click="toggleModalJob()">
+            cerrar
+          </div>
+
+        <div class="input-send">
+          <input v-model="newJob.description" type="text" placeholder="Descripción">
+          <input v-model="newJob.number" type="text" placeholder="Número de whatsapp">
+          <div class="button" @click="addJob()">Enviar</div>
+        </div>
+      </div>
+    </div>
+
 
     <h1 class="job-title">JOBS</h1>
 
-    <p>
-      Empleos: {{ jobs.length }}
-    </p>
+    <div class="actions">
+      <a>
+        Empleos: {{ jobs.length }}
+      </a>
+
+      <div class="btn btn-link ml-1 p-0" @click="toggleModalJob()">
+        Agregar
+      </div>
+    </div>
+
     <div v-for="job in jobs" @click="goToBusiness(job.number)" :key="job?.description" class="bordered-box">
       {{ job?.description }}
 
@@ -73,7 +95,12 @@ export default {
       jobs: [],
       services: [],
       isModalServiceActive: false,
+      isModalJobActive: false,
       newService: {
+        description: '',
+        number: ''
+      },
+      newJob: {
         description: '',
         number: ''
       },
@@ -151,6 +178,31 @@ export default {
         }
     },
 
+    async addJob(){
+      const listaRef = ref(this.db, 'jobs/')
+
+        try {
+          const snapshot = await get(listaRef)
+
+          const listaActual = snapshot.val()
+
+          if (listaActual) {
+            listaActual.push(this.newJob)
+
+            await set(listaRef, listaActual)
+          }
+
+        } catch (error) {
+          console.error("Error al agregar la vista", error);
+        }
+
+        this.toggleModalJob()
+        this.newJob = {
+          description: '',
+          number: ''
+        }
+    },
+
     goToBusiness(number){
       if(number) {
         window.location.href = 'https://wa.me/' + "57" + number
@@ -159,6 +211,10 @@ export default {
 
     toggleModalService() {
       this.isModalServiceActive = !this.isModalServiceActive
+    },
+
+    toggleModalJob() {
+      this.isModalJobActive = !this.isModalJobActive
     }
   },
 
