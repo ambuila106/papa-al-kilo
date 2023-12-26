@@ -30,6 +30,43 @@
       </div>
     </div>
 
+    <div v-if="isModalHomeActive" class="modal-form">
+      <div class="bordered-box">
+          <p>Agrega tu solicitud:</p>
+          <div class="btn btn-link p-0" @click="toggleModalHome()">
+            cerrar
+          </div>
+
+        <div class="input-send">
+          <input v-model="newHome.description" type="text" placeholder="Descripción">
+          <input v-model="newHome.number" type="text" placeholder="Número de whatsapp">
+          <div class="button" @click="addHome()">Enviar</div>
+        </div>
+      </div>
+    </div>
+
+    <h1 class="job-title">HOME</h1>
+
+    <div class="actions">
+      <a>
+        Solicitudes: {{ homes?.length }}
+      </a>
+
+      <div class="btn btn-link ml-1 p-0" @click="toggleModalHome()">
+        Agregar
+      </div>
+    </div>
+
+    <div v-for="home in homes" @click="goToBusiness(home?.number)" :key="home?.description" class="bordered-box">
+      {{ home?.description }}
+
+      <template v-if="home?.number">
+        <hr>
+        <a class="job-number">
+          Whatsapp: {{ home.number }}
+        </a>
+      </template>
+    </div>
 
     <h1 class="job-title">JOBS</h1>
 
@@ -94,8 +131,10 @@ export default {
       showModalSucces:false,
       jobs: [],
       services: [],
+      homes: [],
       isModalServiceActive: false,
       isModalJobActive: false,
+      isModalHomeActive: false,
       newService: {
         description: '',
         number: ''
@@ -104,6 +143,10 @@ export default {
         description: '',
         number: ''
       },
+      newHome: {
+        description: '',
+        number: ''
+      }
     }
   },
   async mounted() {
@@ -125,6 +168,14 @@ export default {
       const data = snapshot.val()
       console.log("data: ", data)
       this.services = data.reverse().filter(elemento => elemento)
+    })
+
+    const homesRef = ref(this.db, 'homes/');
+
+    onValue(homesRef, (snapshot) => {
+      const data = snapshot.val()
+      console.log("data: ", data)
+      this.homes = data?.reverse().filter(elemento => elemento)
     })
 
     console.log(getDatabase(app))
@@ -203,6 +254,31 @@ export default {
         }
     },
 
+    async addHome(){
+      const listaRef = ref(this.db, 'homes/')
+
+        try {
+          const snapshot = await get(listaRef)
+
+          const listaActual = snapshot.val()
+
+          if (listaActual) {
+            listaActual.push(this.newHome)
+
+            await set(listaRef, listaActual)
+          }
+
+        } catch (error) {
+          console.error("Error al agregar la vista", error);
+        }
+
+        this.toggleModalHome()
+        this.newHome = {
+          description: '',
+          number: ''
+        }
+    },
+
     goToBusiness(number){
       if(number) {
         window.location.href = 'https://wa.me/' + "57" + number
@@ -215,6 +291,10 @@ export default {
 
     toggleModalJob() {
       this.isModalJobActive = !this.isModalJobActive
+    },
+
+    toggleModalHome() {
+      this.isModalHomeActive = !this.isModalHomeActive
     }
   },
 
