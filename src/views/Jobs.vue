@@ -45,73 +45,92 @@
       </div>
     </div>
 
-    <h1 class="job-title">HOME</h1>
+    <template v-if="isRent">
+      <h1 class="job-title">HOME</h1>
 
-    <div class="actions">
-      <a>
-        Solicitudes: {{ homes?.length }}
-      </a>
-
-      <div class="btn btn-link ml-1 p-0" @click="toggleModalHome()">
-        Agregar
-      </div>
-    </div>
-
-    <div v-for="home in homes" @click="goToBusiness(home?.number)" :key="home?.description" class="bordered-box">
-      {{ home?.description }}
-
-      <template v-if="home?.number">
-        <hr>
-        <a class="job-number">
-          Whatsapp: {{ home.number }}
+      <div class="actions">
+        <a>
+          Solicitudes: {{ homes?.length }}
         </a>
-      </template>
-    </div>
 
-    <h1 class="job-title">JOBS</h1>
-
-    <div class="actions">
-      <a>
-        Empleos: {{ jobs.length }}
-      </a>
-
-      <div class="btn btn-link ml-1 p-0" @click="toggleModalJob()">
-        Agregar
+        <div class="btn btn-link ml-1 p-0" @click="toggleModalHome()">
+          Agregar
+        </div>
       </div>
-    </div>
 
-    <div v-for="job in jobs" @click="goToBusiness(job.number)" :key="job?.description" class="bordered-box">
-      {{ job?.description }}
+      <div v-for="home in homes" @click="goToBusiness(home?.number)" :key="home?.description" class="bordered-box">
+        {{ home?.description }}
 
-      <template v-if="job?.number">
-        <hr>
-        <a class="job-number">
-          Whatsapp: {{ job.number }}
-        </a>
-      </template>
-    </div>
-
-    <h1 class="job-title">Tools</h1>
-
-    <div class="actions">
-      <a>
-        Servicios: {{ services?.length }}
-      </a>
-
-      <div class="btn btn-link ml-1 p-0" @click="toggleModalService()">
-        Agregar
+        <template v-if="home?.number">
+          <hr>
+          <a class="job-number">
+            Whatsapp: {{ home.number }}
+          </a>
+        </template>
       </div>
-    </div>
+    </template>
 
-    <div v-for="service in services" @click="goToBusiness(service.number)" :key="service?.description" class="bordered-box">
-      {{ service?.description }}
+    <template v-if="isJob">
+      <h1 class="job-title">JOBS</h1>
 
-      <template v-if="service?.number">
-        <hr>
-        <a class="job-number">
-          Whatsapp: {{ service.number }}
+      <div class="actions">
+        <a>
+          Empleos: {{ jobs.length }}
         </a>
-      </template>
+
+        <div class="btn btn-link ml-1 p-0" @click="toggleModalJob()">
+          Agregar
+        </div>
+      </div>
+
+      <div v-for="job in jobs" @click="goToBusiness(job.number)" :key="job?.description" class="bordered-box">
+        {{ job?.description }}
+
+        <template v-if="job?.number">
+          <hr>
+          <a class="job-number">
+            Whatsapp: {{ job.number }}
+          </a>
+        </template>
+      </div>
+    </template>
+
+    <template v-if="isTool">
+      <h1 class="job-title">Tools</h1>
+
+      <div class="actions">
+        <a>
+          Servicios: {{ services?.length }}
+        </a>
+
+        <div class="btn btn-link ml-1 p-0" @click="toggleModalService()">
+          Agregar
+        </div>
+      </div>
+
+      <div v-for="service in services" @click="goToBusiness(service.number)" :key="service?.description" class="bordered-box">
+        {{ service?.description }}
+
+        <template v-if="service?.number">
+          <hr>
+          <a class="job-number">
+            Whatsapp: {{ service.number }}
+          </a>
+        </template>
+      </div>
+    </template>
+
+
+    <div class="menu">
+      <div @click="showRents()">
+        Arriendos
+      </div>
+      <div @click="showJobs()">
+        Trabajos
+      </div>
+      <div @click="showTools()">
+        servicios
+      </div>
     </div>
   </div>
 </template>
@@ -146,7 +165,10 @@ export default {
       newHome: {
         description: '',
         number: ''
-      }
+      },
+      isRent: true,
+      isJob: false,
+      isTool: false,
     }
   },
   async mounted() {
@@ -295,6 +317,37 @@ export default {
 
     toggleModalHome() {
       this.isModalHomeActive = !this.isModalHomeActive
+    },
+
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth', // Usar animación de scroll suave
+      })
+    },
+
+    showRents() {
+      this.isRent = true
+      this.isJob = false
+      this.isTool = false
+
+      this.scrollToTop()
+    },
+
+    showJobs() {
+      this.isRent = false
+      this.isJob = true
+      this.isTool = false
+
+      this.scrollToTop()
+    },
+
+    showTools() {
+      this.isRent = false
+      this.isJob = false
+      this.isTool = true
+
+      this.scrollToTop()
     }
   },
 
@@ -316,7 +369,7 @@ h1, h2 {
 }
 
 .job {
-  margin: 0 1.5rem;
+  margin: 0 1.5rem 3.5rem;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -373,6 +426,17 @@ h1, h2 {
   left: 0;
   width: 100%;
   padding: 1.5rem;
+}
+
+.menu {
+  position: fixed;
+  bottom: 0;
+  background-color: #000516;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-around;
 }
 
 .actions {
