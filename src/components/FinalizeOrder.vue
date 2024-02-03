@@ -39,16 +39,14 @@ export default {
         mensajePedido += `${cantidadProducto} ${nombreProducto}, `;
       });
 
-      // Elimina la coma final y agrega el resto del mensaje
       const mensajeFinal = mensajePedido.slice(0, -2) + "\n\nComo puedo continuar?";
 
-      // Codifica el mensaje para usarlo en la URL
       const mensajeCodificado = encodeURIComponent(mensajeFinal);
       return mensajeCodificado
     },
 
     finalizeOrder(){
-      let number = 3214020472
+      let number = 3227914251
       let order = this.getTextOrder()
       window.location.href = 'https://wa.me/' + "57" + number + "?text=" + order
     }
