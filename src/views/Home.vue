@@ -1,64 +1,67 @@
 <template>
-  <div class="p-4 container-fluid pt-2 col-12 col-sm-10 col-md-7 col-lg-6 col-xl-4">
-    <div>
-      <h1 class="fw-bold mb-5 text-primary fs-3">Inicio</h1>
-      <h1 class="fs-4">Crear publicación</h1>
-      <FTextArea v-model="publication" placeholder="¿Que quieres decir?"></FTextArea>
-      <div>
-        <FButton :text="'Publicar'" @click="addPublication()"></FButton>
-      </div>
-      <div class="border-top border-1 w-100 mt-2"></div>
-
-      <div v-for="(publication, index) in publications" :key="index">
-        <h1 class="fs-5 mt-3 fw-bold">anónimo 🤐</h1>
-        <p>{{ publication }}</p>
-        <div class="border-top border-1 w-100 mt-2"></div>
-      </div>
+  <div class="home">
+    <Header />
+    <div class="products">
+      <CardProduct
+        :image="product.image"
+        :name="product.name"
+        :description="product.description"
+        :price="product.price"
+        v-for="product in products"
+        :key="product.id"
+        class="mb-3"
+        @addProduct="addProduct"
+        :id="product.id"
+      />
     </div>
+    <Footer @click="toggleModalCart()" />
+
+    <transition name="slide-fade">
+      <ModalCart v-if="isOpenModalCart" @toggleModalCart="toggleModalCart" />
+    </transition>
   </div>
 </template>
 
 <script>
-import FTextArea from '../components/FTextArea.vue'
-import FButton from '../components/FButton.vue'
-import app from '@/firebase.js'
-import { getDatabase, ref, onValue, set} from "firebase/database";
+import CardProduct from '../components/CardProduct.vue'
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
+import ModalCart from '../components/ModalCart.vue'
 
 export default {
-  name: 'Home',
-  components: { FTextArea, FButton },
+  name: "Home",
+  components: {
+    CardProduct,
+    Header,
+    Footer,
+    ModalCart
+  },
   data() {
     return {
-      publication: '',
+      publication: "",
       publications: [],
-      db: null
-    }
+      db: null,
+      isOpenModalCart: false
+    };
   },
-  async mounted() {
-    //const db = firebase.database().ref();
-    this.db = getDatabase();
-    const starCountRef = ref(this.db, 'publications/');
-    onValue(starCountRef, (snapshot) => {
-      const data = snapshot.val()
-      console.log("data: ", data)
-      this.publications = data
-    })
-
-    console.log(getDatabase(app))
-  },
+  async mounted() {},
 
   methods: {
-    addPublication() {
-      console.log("publication: ", this.publication)
-      if (this.publication) {
-        this.publications.unshift(this.publication)
-        console.log(this.publications)
-        set(ref(this.db, 'publications/'), this.publications)
-        this.publication = ''
-      }
+    addProduct(id){
+      this.$store.commit('addProduct', id)
+    },
+
+    toggleModalCart() {
+      this.isOpenModalCart = !this.isOpenModalCart
     }
+  },
+
+  computed: {
+    products() {
+      return this.$store.state.products
+    },
   }
-}
+};
 </script>
 
 <style>
@@ -66,4 +69,28 @@ export default {
   color: #3460fd;
   color: white;
 }
+.home {
+  background-color: #f3f3f3;
+  min-height: 100vh;
+}
+
+.products {
+  padding: 90px 25px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateY(100%); /* Cambiado de translateX a translateY */
+  opacity: .9;
+}
+
 </style>

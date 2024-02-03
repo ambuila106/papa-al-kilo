@@ -19,14 +19,14 @@ export default new Router({
       component: Home
     },
     {
-      path: '/festi-sugest',
-      name: 'festi-sugest',
+      path: '/papa-al-kilo',
+      name: 'papa-al-kilo',
       component: App,
       children: [
         {
           path: '/',
           name: 'home',
-          component: Jobs
+          component: Home
         },
         {
           path: '/festival-universitario/signin',

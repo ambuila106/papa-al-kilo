@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/festi-sugest/',
+    publicPath: '/papa-al-kilo/',
 }

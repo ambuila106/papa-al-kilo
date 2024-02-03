@@ -8,9 +8,13 @@ import Vuelidate from 'vuelidate'
 Vue.config.productionTip = false
 Vue.use(Vuelidate)
 
+import store from './store'
+
+
 
 new Vue({
   router,
   Vuelidate,
   render: h => h(App),
+  store
 }).$mount('#app')

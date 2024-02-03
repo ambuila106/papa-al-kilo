@@ -5,7 +5,6 @@
     </div>
   </div>
 </template>
-    
 <script>
 
 export default {
@@ -27,7 +26,7 @@ export default {
   }
 }
 </script>
-  
+
 <style>
   .f-button {
     border: none;
@@ -37,4 +36,3 @@ export default {
     border-radius: 10px;
   }
 </style>
-  

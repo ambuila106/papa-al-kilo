@@ -5,7 +5,7 @@
     </div>
   </div>
 </template>
-  
+
 <script>
 
 export default {
@@ -27,7 +27,6 @@ export default {
   },
   watch:{
     value(value) {
-      console.log(value)
       this.$emit('input', value)
     }
   }

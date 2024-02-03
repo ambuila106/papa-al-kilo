@@ -11,13 +11,15 @@
   "dependencies": {
     "@popperjs/core": "^2.11.7",
     "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.11.3",
     "core-js": "^3.6.5",
     "firebase": "^9.20.0",
     "jquery": "^3.6.4",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
     "vue-router": "^2.8.1",
-    "vuelidate": "^0.7.7"
+    "vuelidate": "^0.7.7",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.15",
@@ -26,6 +28,8 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "file-loader": "^6.2.0",
+    "url-loader": "^4.1.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
