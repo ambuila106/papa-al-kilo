@@ -55,6 +55,12 @@ export default {
     position: relative;
   }
 
+  @media (min-width: 400px) {
+    .card-product {
+      max-width: 170px;
+    }
+  }
+
   .card-product__description {
     font-size: 12px;
   }

@@ -17,7 +17,7 @@
     <Footer @click="toggleModalCart()" />
 
     <transition name="slide-fade">
-      <ModalCart v-if="isOpenModalCart" @toggleModalCart="toggleModalCart" />
+      <ModalCart @deleteProduct="deleteProduct" @addProduct="addProduct" v-if="isOpenModalCart" @toggleModalCart="toggleModalCart" />
     </transition>
   </div>
 </template>
@@ -49,6 +49,10 @@ export default {
   methods: {
     addProduct(id){
       this.$store.commit('addProduct', id)
+    },
+
+    deleteProduct(id){
+      this.$store.commit('deleteProduct', id)
     },
 
     toggleModalCart() {

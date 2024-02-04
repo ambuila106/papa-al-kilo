@@ -47,6 +47,21 @@ const store = new Vuex.Store({
       } else {
         state.cart.push({ ...product, amount: 1 });
       }
+    },
+
+    deleteProduct(state, id) {
+      console.log("dentro")
+      const existProductIndex = state.cart.findIndex(product => product.id === id);
+
+      if (existProductIndex !== -1) {
+        state.cart[existProductIndex].amount--;
+
+        if(state.cart[existProductIndex].amount == 0) {
+          state.cart.splice(existProductIndex, 1);
+        }
+      }
+
+
     }
   }
 })

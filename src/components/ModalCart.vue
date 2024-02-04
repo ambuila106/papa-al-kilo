@@ -15,19 +15,27 @@
       <div v-for="product in cart" :key="product.id" class="modal-cart__products">
         <hr />
         <span class="modal-cart__product-title">
-          <span class="me-2">
+
+          {{ product.name }}
+          <span class="modal-cart__product-price">${{ product.price * product.amount }}</span>
+        </span>
+
+        <div class="product-control">
+          <div @click="addProduct(product.id)" class="product-control__button">+</div>
+          <span>
             {{product.amount}}
           </span>
-          {{ product.name }}
-        </span>
-        <span class="modal-cart__product-price">{{ product.price }}</span>
+          <div @click="deleteProduct(product.id)" class="product-control__button">-</div>
+        </div>
+
+
 
       </div>
 
       <hr class="" />
       <div class="modal-cart__total fw-bold">
         <span>Total:</span>
-        <span>{{ total }}</span>
+        <span>${{ total }}</span>
       </div>
     </div>
 
@@ -62,6 +70,14 @@ export default {
 
     toggleModalCart() {
       this.$emit('toggleModalCart')
+    },
+
+    addProduct(id) {
+      this.$emit('addProduct', id)
+    },
+
+    deleteProduct(id) {
+      this.$emit('deleteProduct', id)
     }
   },
 
@@ -116,6 +132,9 @@ export default {
 .modal-cart__product-title {
   align-self: baseline;
   padding: 0 .5rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .modal-cart__products {
@@ -134,5 +153,22 @@ export default {
   position: absolute;
   top: 1.2rem;
   right: 1.5rem;
+}
+
+.product-control {
+  margin-top: .5rem;
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.05);
+  align-items: center;
+  align-self: end;
+}
+
+.product-control__button {
+  width: 30px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
 }
 </style>
